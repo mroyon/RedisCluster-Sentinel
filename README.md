@@ -1,4 +1,7 @@
 # RedisCluster-Sentinel
+
+<img src="haPRoxyAndRedisCluste2 copy.png" />
+
 Setup Redis Cluster Master/Slave with Sentinel Fail-over and Redis EndPoint Route By HAProxy
 Hello, welcome, the configs of how to implement " Redis Master/Slave replication" and addition to this, also showed how to implement cluster fail over managed by sentinel service and how the application will point to master based on HAPROXY routing.  
 
