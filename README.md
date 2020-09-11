@@ -11,82 +11,135 @@ Starting with 4 vm ubuntu
  4. haproxy 192.168.1.125
  ---------------------------------------------------
  Step sequences:
-Things to do:
-     1. implement redis cluster master/slave replication 
-          a. master node : redis-a: 192.168.1.121 [ad joined, read/write]
-               1. AD joined
-               2. install redis-server
-                    a. update and upgrade
-                    b. install redis-server
-                    c. test redis     
-               3. install redis-sentinel
-                    a. install redis-sentinel
-                    b. stop sentinel service
-               4. set permission for user: 'redis'
-                    a. sentinel conf
-                    b. sentinel log
-               5. allow ports main[6379, 26379], [for app test 22 not required]
-               6. configure redis-server
-                    a. bind
-                    b. port
-                    c. protected-mode no
-                    d. restart redis-server
-          b. slave node 1 : redis-b: 192.168.1.122 [ad joined, read only]
-               1. AD joined
-               2. install redis-server
-                    a. update and upgrade
-                    b. install redis-server
-                    c. test redis
-               3. install redis-sentinel
-                    a. install redis-sentinel
-                    b. stop sentinel service
-               4. set permission for user: 'redis'
-                    a. sentinel conf
-                    b. sentinel log
-               5. allow ports main[6379, 26379], [for app test 22 not required]
-               6. configure redis-server
-                    a. bind
-                    b. port
-                    c. protected-mode no
-                    d. slaveof master [redis-a: 192.168.1.121]
-                    e. restart redis-server
-          c. slave node 2 : redis-c: 192.168.1.123 [ad joined, read only]
-               repeat node 1 steps.
-     2. implement redis failover using sentinel
-          a. master node : redis-a: 192.168.1.121
-               1. configure sentinel.conf
-                    a. bind
-                    b. protected-mode no
-                    c. port
-                    d. monitor mymaster 192.168.1.121
-                    e. down time
-                    f. failover time
-               2. configure sentinel.service
-                    a. start with redis-server
-               3. reload daemon   
-               4. restart sentinel
-               5. the change by sentinel in sentinel.conf
-          b. slave node 1 : redis-b: 192.168.1.122
-               1. configure sentinel.conf
-                    a. bind
-                    b. protected-mode no
-                    c. port
-                    d. monitor mymaster 192.168.1.121
-                    e. down time
-                    f. failover time
-               2. configure sentinel.service
-                    a. start with redis-server
-               3. reload daemon   
-               4. restart sentinel
-               5. the change by sentinel in sentinel.conf 
-          c. slave node 2 : redis-c: 192.168.1.123
-              repeate node1 steps.
-     3. implement haproxy for redis [to identify master]
-          a. already deployed haproxy
-          b. add block for tcp mode for redis with send and expect rules
-     4. test from client
-          when redis-b is down -- redis-a promote to master
-          when redis-a is down -- redis-c promote to master
+
+    <p>Things to do:</p>
+<ol>
+<li>implement redis cluster master/slave replication &lt;br&gt;
+<ol style="list-style-type: lower-alpha;">
+<li>master node : redis-a: 192.168.1.121 [ad joined, read/write]<br />
+<ol style="list-style-type: lower-alpha;">
+<li>AD joined</li>
+<li>install redis-server
+<ol>
+<li>update and upgrade</li>
+<li>install redis-server</li>
+<li>test redis</li>
+</ol>
+</li>
+<li>install redis-sentinel
+<ol style="list-style-type: lower-alpha;">
+<li>install redis-sentinel</li>
+<li>stop sentinel service</li>
+</ol>
+</li>
+<li>set permission for user: 'redis'
+<ol style="list-style-type: lower-alpha;">
+<li>sentinel conf</li>
+<li>sentinel log</li>
+<li>allow ports main[6379, 26379], [for app test 22 not required]</li>
+</ol>
+</li>
+<li>configure redis-server
+<ol style="list-style-type: lower-alpha;">
+<li>bind</li>
+<li>port</li>
+<li>protected-mode no</li>
+<li>restart redis-server</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>slave node 1 : redis-b: 192.168.1.122 [ad joined, read only]
+<ol style="list-style-type: lower-alpha;">
+<li>AD joined</li>
+<li>install redis-server
+<ol style="list-style-type: lower-alpha;">
+<li>update and upgrade</li>
+<li>install redis-server</li>
+<li>test redis</li>
+</ol>
+</li>
+<li>install redis-sentinel
+<ol style="list-style-type: lower-alpha;">
+<li>install redis-sentinel</li>
+<li>stop sentinel service</li>
+</ol>
+</li>
+<li>set permission for user: 'redis'
+<ol style="list-style-type: lower-alpha;">
+<li>sentinel conf</li>
+<li>sentinel log</li>
+</ol>
+</li>
+<li>allow ports main[6379, 26379], [for app test 22 not required]</li>
+<li>configure redis-server
+<ol style="list-style-type: lower-alpha;">
+<li>bind</li>
+<li>port</li>
+<li>protected-mode no</li>
+<li>slaveof master [redis-a: 192.168.1.121]</li>
+<li>restart redis-server</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>slave node 2 : redis-c: 192.168.1.123 [ad joined, read only]<br /> repeat node 1 steps.</li>
+<li>implement redis failover using sentinel
+<ol style="list-style-type: lower-alpha;">
+<li>master node : redis-a: 192.168.1.121
+<ol style="list-style-type: lower-alpha;">
+<li>configure sentinel.conf
+<ol style="list-style-type: lower-alpha;">
+<li>bind</li>
+<li>protected-mode no</li>
+<li>port</li>
+<li>monitor mymaster 192.168.1.121</li>
+<li>down time</li>
+<li>failover time</li>
+</ol>
+</li>
+<li>start with redis-server</li>
+<li>reload daemon</li>
+<li>estart sentinel</li>
+<li>the change by sentinel in sentinel.conf</li>
+</ol>
+</li>
+<li>slave node 1 : redis-b: 192.168.1.122
+<ol style="list-style-type: lower-alpha;">
+<li>configure sentinel.conf
+<ol style="list-style-type: lower-alpha;">
+<li>bind</li>
+<li>protected-mode no</li>
+<li>port</li>
+<li>monitor mymaster 192.168.1.121</li>
+<li>down time</li>
+<li>failover time</li>
+</ol>
+</li>
+<li>start with redis-server</li>
+<li>reload daemon</li>
+<li>restart sentinel</li>
+<li>the change by sentinel in sentinel.conf</li>
+</ol>
+</li>
+<li>slave node 2 : redis-c: 192.168.1.123<br /> repeate node1 steps.</li>
+</ol>
+</li>
+<li>implement haproxy for redis [to identify master]
+<ol style="list-style-type: lower-alpha;">
+<li>already deployed haproxy</li>
+<li>add block for tcp mode for redis with send and expect rules</li>
+</ol>
+</li>
+<li>test from client
+<ol style="list-style-type: lower-alpha;">
+<li>when redis-b is down -- redis-a promote to master</li>
+<li>when redis-a is down -- redis-c promote to master</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 
  
 You can download the config files @
