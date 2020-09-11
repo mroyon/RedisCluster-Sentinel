@@ -144,7 +144,7 @@ Starting with 4 vm ubuntu
 </li>
 </ol>
 
-Watch the video@  
+Watch the video@  https://youtu.be/J27AcaVuAPM
  
 You can download the config files @
 
