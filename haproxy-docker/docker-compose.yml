@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  haproxy:
+    image: haproxy:2.4-alpine
+    container_name: haproxy
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes: 
+      - ./haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg

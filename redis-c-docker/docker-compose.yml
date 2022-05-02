@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  redis-c:
+    image: redis:6.2-alpine
+    container_name: redis-c
+    restart: always
+    ports:
+      - "${REDIS_C_PORT}:6379"
+    volumes: 
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+  sentinel-c:
+    image: redis:6.2-alpine
+    container_name: sentinel-c
+    restart: always
+    command: bash -c "chown redis:redis /etc/redis/sentinel.conf && redis-server /etc/redis/sentinel.conf --sentinel"
+    depends_on:
+      - redis-c
+    ports:
+      - "${SENTINEL_B_PORT}:26379"
+    volumes: 
+      - ./sentinel.conf:/etc/redis/sentinel.conf
+
